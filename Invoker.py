@@ -25,6 +25,23 @@ class Invoker:
         self.consistency_messages = []
         if self.role:
             self.consistency_messages.append({"role": "system", "content": self.role})
+
+    def get_current_role(self) -> str:
+        '''
+            Get the current role
+        '''
+        return self.role
+
+    def resume_consistency_messages(self, consistency_messages: list[dict]) -> bool:
+        '''
+            Resume the given consistency messages
+        '''
+        self.consistency_messages = consistency_messages
+        if len(self.consistency_messages > 0 and self.consistency_messages[0]["role"] == "system"):
+            self.role = self.consistency_messages[0]["content"]
+        else:
+            self.role = None
+        return True
     
     def get_current_consistency_messages(self) -> list[dict]:
         '''
@@ -75,7 +92,7 @@ class Invoker:
         self.consistency_messages.append({"role": "assistant", "content": "I understand the requirements, and will adjust the output accordingly."})
         return True
 
-    def consistent_invoke(self, prompt: str, temp: Optional[float] = 1.0, max: Optional[int] = 500) -> str:
+    def consistent_invoke(self, prompt: str, temp: Optional[float] = 1.0, max: Optional[int] = 1000) -> str:
         '''
             Invoke the API with the consistency messages
         '''
@@ -106,7 +123,7 @@ class Invoker:
             return f"ERROR: {str(e)}"
         
 
-    def invoke(self, prompt: str, temp: Optional[float] = 1.0, max: Optional[int] = 500) -> str:
+    def invoke(self, prompt: str, temp: Optional[float] = 1.0, max: Optional[int] = 1000) -> str:
         '''
             Invoke the API independently
         '''
