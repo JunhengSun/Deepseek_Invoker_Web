@@ -3,7 +3,7 @@ import sqlite3
 from typing import Optional, List, Dict
 
 class Database:
-    def __init__(self, db_path = "database.db", schema_path = "schema.sql"):
+    def __init__(self, db_path = "Database.db", schema_path = "Schema.sql"):
         self.db_path = db_path
         self.schema_path = schema_path
         if not self.db_path or not self.schema_path:
