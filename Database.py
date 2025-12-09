@@ -1,6 +1,6 @@
 import os
 import sqlite3
-from typing import Optional, List, Dic
+from typing import Optional
 
 class Database:
     def __init__(self, db_path = "Data.db", schema_path = "Schema.sql"):
