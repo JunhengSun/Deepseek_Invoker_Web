@@ -1,6 +1,6 @@
 import os
 import sqlite3
-from typing import Optional, List, Dict
+from typing import Optional, List, Dic
 
 class Database:
     def __init__(self, db_path = "Data.db", schema_path = "Schema.sql"):
@@ -23,13 +23,21 @@ class Database:
 
     def _test_connection(self) -> bool:
         '''
-            Test the connection to the database
+            Test the connection to the database and verify all required tables exist
         '''
         try:
             with sqlite3.connect(self.db_path) as conn:
                 cursor = conn.cursor()
-                # TODO: need a more specific test
-                cursor.execute("SELECT 1") 
+                # Check if all required tables exist
+                required_tables = ['users', 'chat_sessions', 'messages']
+                cursor.execute("""
+                    SELECT name FROM sqlite_master 
+                    WHERE type='table' AND name IN (?, ?, ?)
+                """, tuple(required_tables))
+                existing_tables = {row[0] for row in cursor.fetchall()}
+                missing_tables = set(required_tables) - existing_tables
+                if missing_tables:
+                    raise ConnectionError(f"ERROR: Missing required tables: {', '.join(missing_tables)}")
                 return True
         except Exception as e:
             raise ConnectionError(f"ERROR: Failed to connect to the database: {str(e)}")
@@ -58,6 +66,12 @@ class Database:
         if not query:
             return False
         try:
+            '''
+                备注：
+                此处的sqlite.connect返回一个Connection对象，是一个上下文管理器(@contextmanager)
+                with语句开始，将会开始一个隐式事务
+                with语句结束，如果没有发生异常，将会自动提交事务；如果有异常，将会自动回滚事务；处理结束后自动关闭链接
+            '''
             with sqlite3.connect(self.db_path) as conn:
                 # set to row factory
                 conn.row_factory = sqlite3.Row

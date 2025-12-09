@@ -114,6 +114,15 @@ class Invoker:
         '''
             Invoke the API with the consistency messages
         '''
+        '''
+            备注：
+            1. messages传递的参数为一个列表，列表中每个元素为一个字典，字典中包含role和content两个键值对
+            可以模仿AI的对话过程，添加到messages中，以获得更精确的回答（可参考adjust role实现）
+
+            2. temperature参数用于控制生成内容的随机性，范围为0到2，值越大，生成内容越随机
+
+            3. max_tokens参数用于控制生成内容的最大长度，达到限制自动停止，可能导致不完整
+        '''
         # check if prompt is empty
         if not prompt.strip():
             return "ERROR: Empty prompt"

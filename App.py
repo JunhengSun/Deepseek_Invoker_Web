@@ -6,7 +6,18 @@ from typing import Optional
 import os
 import sqlite3
 
+'''
+    备注：
+    此处的__name__用于确定资源文件的加载位置
+'''
 app = Flask(__name__)
+'''
+    备注：
+    session是Flask的内置对象，是一个字典，用于存储用户会话信息
+    工作流程：
+    1. 登陆后，Flask后端将用户信息存储到session中，使用secret_key加密后发送到浏览器，存储在cookie中
+    2. 用户后续访问时，浏览器自动发送cookie，Flask解密验证后，将数据加载到session对象中
+'''
 try:    
     app.secret_key = os.getenv("SECRET_KEY")
 except Exception as e:
@@ -17,6 +28,15 @@ def get_database() -> Database:
 
 def get_invoker(api_key: str, role: Optional[str] = None) -> Invoker:
     return Invoker(api_key, role)
+
+def get_message_list(messages: list[sqlite3.Row]) -> list[dict]:
+    '''
+        Get the message list from the database
+    '''
+    message_list = []
+    for message in messages:
+        message_list.append({"role": message["message_role"], "content": message["message_content"]})
+    return message_list
 
 @app.route("/")
 def entry():
@@ -59,6 +79,15 @@ def register():
         db = get_database()
         user = db.execute("SELECT * FROM users WHERE username = ?", (username,), fetchone=True)
         if user:
+            '''
+                备注：
+                flash是Flask的内置函数，用于在请求之间传递一次性消息，一般用于显示错误信息、成功信息等
+                工作流程：
+                1. Flask后端调用flash('消息内容', '消息类别')存储消息到session中
+                2. 消息被存储在session的一个特殊列表里，等待下次请求时读取
+                3. 用户重定向或访问新页面时，Flask前端通过get_flashed_messages()获取消息
+                4. 消息被获取后会自动从session中清除，确保只显示一次
+            '''
             flash("ERROR: Username already exists")
             return redirect("/register")
         # register successfully
@@ -130,15 +159,6 @@ def chat_session(session_id):
         db = get_database()
         messages = db.execute("SELECT message_role, message_content FROM messages WHERE user_id = ? AND session_id = ? ORDER BY message_id ASC", (session["user_id"], session_id), fetchall=True)
         return render_template("chat.html", messages=messages, username=session["username"], chat_id=session_id)
-
-def get_message_list(messages: list[sqlite3.Row]) -> list[dict]:
-    '''
-        Get the message list from the database
-    '''
-    message_list = []
-    for message in messages:
-        message_list.append({"role": message["message_role"], "content": message["message_content"]})
-    return message_list
 
 @app.route("/chat/history", methods=["GET"])
 def show_history():

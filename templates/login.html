@@ -100,6 +100,12 @@
     </style>
 </head>
 <body>
+    {# 
+        备注：
+        1. get_flashed_messages() 获取所有待显示的flash消息
+        2. flash消息在获取后会自动从session中清除，确保只显示一次
+        3. messages[0] 只显示第一条消息（简化处理，避免多条消息堆积）
+    #}
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             <div class="flash">
