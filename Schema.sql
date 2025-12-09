@@ -15,8 +15,10 @@ CREATE TABLE chat_sessions (
 
 CREATE TABLE messages (
     message_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
     session_id INTEGER NOT NULL,
     message_role TEXT NOT NULL CHECK (message_role IN ('user', 'assistant', 'system')),
     message_content TEXT NOT NULL,
-    FOREIGN KEY (session_id) REFERENCES chat_sessions (session_id)
+    FOREIGN KEY (session_id) REFERENCES chat_sessions (session_id),
+    FOREIGN KEY (user_id) REFERENCES user (user_id)
 );

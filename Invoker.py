@@ -21,10 +21,28 @@ class Invoker:
             base_url = self.base_url
         )
 
+
         self.role = role
         self.consistency_messages = []
         if self.role:
             self.consistency_messages.append({"role": "system", "content": self.role})
+
+    def test_api_key_validity(self) -> bool:
+        '''
+            Test the API key validity
+        '''
+        try:
+            self.client.chat.completions.create(
+                model = self.model,
+                messages = [{"role": "user", "content": "Hello"}],
+                max_tokens = 1
+            )
+            return True
+        except openai.AuthenticationError:
+            return False
+        except Exception as e:
+            raise RuntimeError(f"ERROR: Failed to test API key validity: {str(e)}")
+
 
     def get_current_role(self) -> str:
         '''
@@ -120,6 +138,30 @@ class Invoker:
             return result
         except Exception as e:
             self.consistency_messages.pop()
+            return f"ERROR: {str(e)}"
+
+    def message_invoke(self, messages: list[dict], temp: Optional[float] = 1.0, max: Optional[int] = 1000) -> str:
+        '''
+            Invoke the API with the given messages
+        '''
+        # check if messages is empty
+        if not messages:
+            return "ERROR: Empty messages"
+        
+        # check if temp is between 0 and 2
+        if temp < 0 or temp > 2:
+            return "ERROR: Temperature must be between 0 and 2"
+
+        # invoke API
+        try:
+            response = self.client.chat.completions.create(
+                model = self.model,
+                messages = messages,
+                temperature = temp,
+                max_tokens = max
+            )
+            return response.choices[0].message.content
+        except Exception as e:
             return f"ERROR: {str(e)}"
         
 

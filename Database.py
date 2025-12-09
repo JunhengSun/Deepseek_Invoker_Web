@@ -3,7 +3,7 @@ import sqlite3
 from typing import Optional, List, Dict
 
 class Database:
-    def __init__(self, db_path = "Database.db", schema_path = "Schema.sql"):
+    def __init__(self, db_path = "Data.db", schema_path = "Schema.sql"):
         self.db_path = db_path
         self.schema_path = schema_path
         if not self.db_path or not self.schema_path:
@@ -55,6 +55,8 @@ class Database:
                 2. cursor.fetchall() if fetchall is True
                 3. True if the query is successful, otherwise raise an exception
         '''
+        if not query:
+            return False
         try:
             with sqlite3.connect(self.db_path) as conn:
                 # set to row factory
@@ -72,16 +74,21 @@ class Database:
                 return True
         except Exception as e:
             raise RuntimeError(f"ERROR: Failed to execute query: {str(e)}")
-        
 
-            
-            
-            
-            
-
-
-        
-
-    
-
-        
+    def execute_batch(self, queries: list[str], params: list[tuple]):
+        '''
+            Execute a batch of queries to the database
+                dedicated for INSERT, UPDATE, DELETE queries
+        '''
+        if not queries:
+            return False
+        if len(queries) != len(params):
+            raise ValueError("ERROR: The number of queries and parameters must be the same")
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.cursor()
+                for i in range(len(queries)):
+                    cursor.execute(queries[i], params[i])
+                return True
+        except Exception as e:
+            raise RuntimeError(f"ERROR: Failed to execute batch queries: {str(e)}")

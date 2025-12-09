@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-top: 60px;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            text-align: left;
+        }
+        
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .history-table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        
+        .session-row {
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .session-row:hover {
+            background: #f8f9fa;
+        }
+        
+        /* 序号链接样式 */
+        .session-link {
+            color: #3498db;
+            font-weight: bold;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .session-link:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+        
+        .session-row button {
+            background: #95a5a6;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+        
+        .session-row button:hover {
+            background: #7f8c8d;
+        }
+        
+        .detail-panel {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .detail-panel h3 {
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        
+        .detail-item {
+            margin: 8px 0;
+            line-height: 1.5;
+        }
+        
+        .detail-label {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <h1>History</h1>
+    
+    <div class="container">
+        <table class="history-table">
+            <tbody>
+                {% for session in sessions %}
+                <tr class="session-row">
+                    <td>
+                        <a href="/chat/{{ session['session_id'] }}" class="session-link">
+                            #{{ session['session_id'] }}
+                        </a>
+                    </td>
+                    <td>{{ session['session_title'] }}</td>
+                    <td>{{ session['session_created_at'] }}</td>
+                    <td>
+                        <button onclick="showDetails({{ session['session_id'] }})">⋯</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <div id="detailPanel" class="detail-panel">
+            <h3 id="detailTitle">Session Details</h3>
+            <div class="detail-item"><span class="detail-label">Title:</span> <span id="detailTitleValue"></span></div>
+            <div class="detail-item"><span class="detail-label">Created at:</span> <span id="detailCreatedAt"></span></div>
+            <div class="detail-item"><span class="detail-label">AI Role:</span> <span id="detailAiRole"></span></div>
+            <div class="detail-item"><span class="detail-label">AI Temperature:</span> <span id="detailAiTemp"></span></div>
+        </div>
+    </div>
+
+    <script>
+        function showDetails(sessionId) {
+            const sessionData = {
+                {% for session in sessions %}
+                {{ session['session_id'] }}: {
+                    title: "{{ session['session_title'] | replace('"', '\\"') }}",
+                    createdAt: "{{ session['session_created_at'] | replace('"', '\\"') }}",
+                    aiRole: "{{ session['session_role'] | replace('"', '\\"') }}",
+                    aiTemp: {{ session['temp'] }}
+                }{% if not loop.last %},{% endif %}
+                {% endfor %}
+            };
+            
+            const session = sessionData[sessionId];
+            if (!session) return;
+            
+            document.getElementById('detailTitleValue').textContent = session.title;
+            document.getElementById('detailCreatedAt').textContent = session.createdAt;
+            document.getElementById('detailAiRole').textContent = session.aiRole;
+            document.getElementById('detailAiTemp').textContent = session.aiTemp;
+            
+            document.getElementById('detailPanel').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

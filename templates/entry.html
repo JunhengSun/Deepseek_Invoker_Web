@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeepSeek Chat</title>
+    <title>DeepSeek Web Invoker</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -16,27 +16,34 @@
         h1 {
             color: #2c3e50;
             margin-top: 60px;
-            margin-bottom: 80px;
+            margin-bottom: 20px;
+            font-size: 2.2em;
+            letter-spacing: 1px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 60px;
         }
         
         .container {
             max-width: 400px;
             margin: 0 auto;
-        }
-        
-        p {
-            color: #666;
-            margin: 20px 0;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
         }
         
         a {
             text-decoration: none;
             display: block;
-            margin: 40px 0;
+            width: 100%;
         }
         
         button {
-            width: 100%;
+            width: 150px;
             padding: 16px;
             font-size: 1.1em;
             background: #3498db;
@@ -50,31 +57,29 @@
             background: #2980b9;
         }
         
-        .history-btn {
+        .register-btn {
             background: #95a5a6;
         }
         
-        .history-btn:hover {
+        .register-btn:hover {
             background: #7f8c8d;
         }
     </style>
 </head>
 <body>
-    <h1>DeepSeek Chat</h1>
+    <h1>DeepSeek Web Invoker</h1>
+    <div class="subtitle">welcome!</div>
     
     <div class="container">
-        <!-- 方法1：<a>标签包裹按钮 -->
-        <a href="/create">
-            <button>Create New Chat</button>
+        <!-- Login Button -->
+        <a href="/login">
+            <button>Login</button>
         </a>
         
-        <p>Start a new conversation with AI</p>
-        
-        <a href="/history">
-            <button class="history-btn">View Chat History</button>
+        <!-- Register Button -->
+        <a href="/register">
+            <button class="register-btn">Register</button>
         </a>
-        
-        <p>Continue your previous conversations</p>
     </div>
 </body>
 </html>
