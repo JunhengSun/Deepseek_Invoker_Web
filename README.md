@@ -7,23 +7,23 @@
 ## URL Overview
 
 * `/`
-    * ![](resources/1.png)
+    * <img src="resources/1.png" style="zoom:50%;" />
 
 * `/register`
-    * ![](resources/2.png)
+    * <img src="resources/2.png" style="zoom:50%;" />
 
 * `/login`
-    * ![](resources/3.png)
+    * <img src="resources/3.png" style="zoom:50%;" />
 
 * `/chat`
-    * ![](resources/5.png)
+    * <img src="resources/5.png" style="zoom:50%;" />
 
 * `/chat/create`
-    * ![](resources/6.png)
+    * <img src="resources/6.png" style="zoom:50%;" />
 
 * `/chat/<int:session_id>`
-    * ![](resources/7.png)
+    * <img src="resources/7.png" style="zoom:50%;" />
 
 * `/chat/history`
-    * ![](resources/8.png)
-    * After clicking to expand the details: ![](resources/9.png)
+    * <img src="resources/8.png" style="zoom:50%;" />
+    * After clicking to expand the details: <img src="resources/9.png" style="zoom:50%;" />
