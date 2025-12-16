@@ -22,3 +22,6 @@ CREATE TABLE messages (
     FOREIGN KEY (session_id) REFERENCES chat_sessions (session_id),
     FOREIGN KEY (user_id) REFERENCES user (user_id)
 );
+
+CREATE INDEX idx_messages_user_session_id ON messages (user_id, session_id, message_id);
+CREATE INDEX idx_chat_sessions_user_created ON chat_sessions (user_id, session_created_at DESC);

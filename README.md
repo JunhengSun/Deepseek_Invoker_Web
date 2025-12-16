@@ -6,11 +6,9 @@
 
 ## URL Overview
 
-* **NOTE**: 
-
-        * Before running the system: `export SECRET_KEY="your_secret_here"`
-
-        * You will also need a DeepSeek API key for login authentication.
+* **NOTE:** To run the program, you need to meet the following requirements:
+    * Before running the system: `export SECRET_KEY="your_secret_here"`
+    * You will also need a DeepSeek API key for login authentication.
 
 * `/`
     * <img src="resources/1.png" style="zoom:20%;" />
@@ -32,5 +30,5 @@
 
 * `/chat/history`
     * <img src="resources/8.png" style="zoom:20%;" />
-    
+
     * After clicking to expand the details: <img src="resources/9.png" style="zoom:20%;" />

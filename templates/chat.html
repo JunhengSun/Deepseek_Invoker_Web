@@ -36,8 +36,34 @@
             font-weight: bold;
             text-align: center;
         }
+
+        .top-bar {
+            width: 100%;
+            max-width: 800px;
+            margin: 10px auto 0;
+            padding: 10px 20px 0;
+            box-sizing: border-box;
+        }
+
+        .back-btn {
+            padding: 8px 20px;
+            font-size: 1.05em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #3498db;
+            color: white;
+            box-shadow: 0 2px 6px rgba(52, 152, 219, 0.2);
+            transition: background-color 0.2s, box-shadow 0.2s, transform 0.1s;
+            text-align: center;
+        }
+
+        .back-btn:hover {
+            background: #2980b9;
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+            transform: translateY(-1px);
+        }
         
-        /* 主内容容器 - 垂直居中 */
         .main-content {
             width: 100%;
             max-width: 800px;
@@ -163,7 +189,13 @@
             </div>
         {% endif %}
     {% endwith %}
-    
+
+    <div class="top-bar">
+        <a href="/chat">
+            <button class="back-btn">Back</button>
+        </a>
+    </div>
+
     <div class="main-content">
         <div class="chat-container">
             {% for message in messages %}

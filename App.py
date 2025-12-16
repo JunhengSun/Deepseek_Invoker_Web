@@ -169,5 +169,11 @@ def show_history():
     sessions = db.execute("SELECT * FROM chat_sessions WHERE user_id = ? ORDER BY session_created_at DESC", (session["user_id"],), fetchall=True)
     return render_template("history.html", sessions=sessions)
 
+@app.route("/logout", methods=["GET"])
+def logout():
+    session.clear()
+    flash("Logged out successfully")
+    return redirect("/")
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5050, debug=True)

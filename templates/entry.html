@@ -64,9 +64,28 @@
         .register-btn:hover {
             background: #7f8c8d;
         }
+
+        .flash {
+            max-width: 400px;
+            margin: 0 auto 15px;
+            padding: 12px;
+            background: #fff8e1;
+            border: 1px solid #ffd54f;
+            border-radius: 6px;
+            color: #5d4037;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flash">
+                {{ messages[0] }}
+            </div>
+        {% endif %}
+    {% endwith %}
+
     <h1>DeepSeek Web Invoker</h1>
     <div class="subtitle">welcome!</div>
     

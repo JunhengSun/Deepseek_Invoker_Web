@@ -41,7 +41,7 @@
         .quick-start-desc {
             color: #555;
             font-size: 1.1em;
-            margin: 10px 0;
+            margin: 6px 0 2px;
         }
         
         button {
@@ -51,7 +51,7 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            margin-top: 15px;
+            margin-top: 6px;
             transition: background-color 0.2s;
         }
 
@@ -72,6 +72,15 @@
         .history-btn:hover {
             background: #7f8c8d;
         }
+
+        .logout-btn {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .logout-btn:hover {
+            background: #27ae60;
+        }
     </style>
 </head>
 <body>
@@ -79,7 +88,7 @@
 
     <div class="container">
         
-        <p class="quick-start-desc">Chat with AI</p>
+        <p class="quick-start-desc">Click here to chat with AI</p>
         <a href="/chat/create">
             <button class="create-btn">Create</button>
         </a>
@@ -87,6 +96,11 @@
         <p class="quick-start-desc">Click here to resume a chat</p>
         <a href="/chat/history">
             <button class="history-btn">Resume</button>
+        </a>
+
+        <p class="quick-start-desc">Click here to logout</p>
+        <a href="/logout">
+            <button class="logout-btn">Logout</button>
         </a>
     </div>
 </body>
